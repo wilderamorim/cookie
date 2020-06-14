@@ -21,7 +21,7 @@ class Cookie
     public static function set(string $name, $value, int $minutes, ?string $path = null, bool $encrypt = true): bool
     {
         if (is_array($value)) {
-            $value = base64_encode(http_build_query($value));
+            $value = self::encrypt(http_build_query($value));
         } else {
             $value = ($encrypt ? self::encrypt($value) : $value);
         }
@@ -61,25 +61,22 @@ class Cookie
 
     /**
      * @param string $name
-     * @return array|null
+     * @param bool $isArray
+     * @param bool $decrypt
+     * @return mixed|string|null
      */
-    public static function get(string $name): ?array
+    public static function get(string $name, bool $isArray = false, bool $decrypt = true)
     {
         $cookie = self::name($name);
         if ($cookie) {
-            parse_str(base64_decode($cookie), $data);
-            return $data;
+            if (!$isArray) {
+                return $decrypt ? self::decrypt($cookie) : $cookie;
+            } else {
+                parse_str(self::decrypt($cookie), $data);
+                return $data;
+            }
         }
         return null;
-    }
-
-    /**
-     * @param string $name
-     * @return mixed
-     */
-    public static function name(string $name)
-    {
-        return filter_input(INPUT_COOKIE, $name, FILTER_SANITIZE_STRIPPED);
     }
 
     /**
@@ -109,7 +106,25 @@ class Cookie
      */
     private static function encrypt(string $value): string
     {
-        return hash('md5', $value);
+        return base64_encode($value);
+    }
+
+    /**
+     * @param string $value
+     * @return string
+     */
+    private static function decrypt(string $value): string
+    {
+        return base64_decode($value);
+    }
+
+    /**
+     * @param string $name
+     * @return mixed
+     */
+    private static function name(string $name)
+    {
+        return filter_input(INPUT_COOKIE, $name, FILTER_SANITIZE_STRIPPED);
     }
 
     public static function all()

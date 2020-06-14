@@ -1,7 +1,6 @@
 # Cookie @ElePHPant
 
 [![Maintainer](http://img.shields.io/badge/maintainer-@wilderamorim-blue.svg?style=flat-square)](https://twitter.com/WilderAmorim)
-[![Maintainer](http://img.shields.io/badge/maintainer-@sergiodanilojr-blue.svg?style=flat-square)](https://twitter.com/sergiodanilojr)
 [![Source Code](http://img.shields.io/badge/source-wilderamorim/cookie-blue.svg?style=flat-square)](https://github.com/wilderamorim/cookie)
 [![PHP from Packagist](https://img.shields.io/packagist/php-v/elephpant/cookie.svg?style=flat-square)](https://packagist.org/packages/elephpant/cookie)
 [![Latest Version](https://img.shields.io/github/release/wilderamorim/cookie.svg?style=flat-square)](https://github.com/wilderamorim/cookie/releases)
@@ -39,7 +38,7 @@ composer require elephpant/cookie
 
 Para mais detalhes sobre como usar, veja uma pasta de exemplo no diretório do componente. Nela terá um exemplo de uso para cada classe. Ele funciona assim:
 
-#### Create Cookie:
+##### Create Cookie:
 
 ```php
 <?php
@@ -50,7 +49,13 @@ use ElePHPant\Cookie\Cookie;
 Cookie::set('food', 'egg', 20);
 ```
 
-#### Create Value as Array:
+##### Get Cookie Value:
+
+```php
+echo Cookie::get('food'); //egg
+```
+
+##### Create Value as Array:
 
 ```php
 //name, values, minutes, ...
@@ -60,16 +65,17 @@ Cookie::set('users', [
 ], 20);
 ```
 
+##### Get Value as Array:
+
+```php
+//name, isArray...
+echo Cookie::get('users', true)['role']; //Developer
+```
+
 ##### Remove:
 
 ```php
 Cookie::destroy('food');
-```
-
-##### Get From Array Value:
-
-```php
-echo Cookie::get('users')['role']; //Developer
 ```
 
 ##### Check if Exists:
@@ -114,7 +120,6 @@ Thank you
 ## Credits
 
 - [Wilder Amorim](https://github.com/wilderamorim) (Developer)
-- [Sérgio Danilo Jr.](https://github.com/sergiodanilojr) (Developer)
 - [Agência Uebi](https://www.uebi.com.br) (Team)
 - [All Contributors](https://github.com/wilderamorim/cookie/contributors) (This Rock)
 

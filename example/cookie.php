@@ -16,7 +16,14 @@ Cookie::all();
 /**
  * create
  */
-Cookie::set('food', 'egg', 2);
+Cookie::set('food', 'egg', 20);
+
+/**
+ * get value
+ */
+echo Cookie::get('food');
+
+echo '</br></br>';
 
 /**
  * create value as array
@@ -24,12 +31,12 @@ Cookie::set('food', 'egg', 2);
 Cookie::set('users', [
     'name' => 'Wilder',
     'role' => 'Developer'
-], 2);
+], 20);
 
 /**
- * get from array value
+ * get value as array
  */
-echo Cookie::get('users')['role'];
+echo Cookie::get('users', true)['role'];
 
 echo '</br></br>';
 
