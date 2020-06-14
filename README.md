@@ -46,23 +46,24 @@ Para mais detalhes sobre como usar, veja uma pasta de exemplo no diretório do c
 require __DIR__ . '/../vendor/autoload.php';
 use ElePHPant\Cookie\Cookie;
 
-Cookie::set('food', 'egg', 2);
+//name, value, minutes, ...
+Cookie::set('food', 'egg', 20);
 ```
 
 #### Create Value as Array:
 
 ```php
+//name, values, minutes, ...
 Cookie::set('users', [
     'name' => 'Amorim',
     'role' => 'Developer'
-], 2);
+], 20);
 ```
 
 ##### Remove:
 
 ```php
 Cookie::destroy('food');
-Cookie::destroy('users');
 ```
 
 ##### Get From Array Value:
@@ -84,6 +85,7 @@ if (Cookie::has('food')) {
 ##### Check if Exists by Value:
 
 ```php
+//name, value
 if (Cookie::has('food', 'egg')) {
     echo 'the value is equal to egg';
 } else {
