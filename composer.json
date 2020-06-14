@@ -1,0 +1,33 @@
+{
+  "name": "elephpant/cookie",
+  "description": "A simple and effective way to work with Cookies",
+  "keywords": [
+    "ElePHPant",
+    "Cookie"
+  ],
+  "homepage": "http://www.uebi.com.br",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Wilder Amorim",
+      "email": "agencia@uebi.com.br",
+      "homepage": "https://www.uebi.com.br",
+      "role": "Developer"
+    },
+    {
+      "name": "Sérgio Danilo Jr",
+      "email": "sergiodanilojr@hotmail.com",
+      "homepage": "https://www.sergiodanilojr.com.br",
+      "role": "Developer"
+    }
+  ],
+  "require": {
+    "php": "^7.1",
+    "ext-json": "*"
+  },
+  "autoload": {
+    "psr-4": {
+      "ElePHPant\\Cookie\\": "src"
+    }
+  }
+}
