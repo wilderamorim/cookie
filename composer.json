@@ -13,12 +13,6 @@
       "email": "agencia@uebi.com.br",
       "homepage": "https://www.uebi.com.br",
       "role": "Developer"
-    },
-    {
-      "name": "Sérgio Danilo Jr",
-      "email": "sergiodanilojr@hotmail.com",
-      "homepage": "https://www.sergiodanilojr.com.br",
-      "role": "Developer"
     }
   ],
   "require": {

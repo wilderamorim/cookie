@@ -21,9 +21,10 @@ class Cookie
     public static function set(string $name, $value, int $minutes, ?string $path = null, bool $encrypt = true): bool
     {
         if (is_array($value)) {
-            $value = self::encrypt(http_build_query($value));
+            $queryString = http_build_query($value);
+            $value = $encrypt ? self::encrypt($queryString) : $queryString;
         } else {
-            $value = ($encrypt ? self::encrypt($value) : $value);
+            $value = $encrypt ? self::encrypt($value) : $value;
         }
         return self::setCookie($name, $value, self::expire($minutes), $path);
     }
@@ -68,13 +69,13 @@ class Cookie
     {
         $cookie = self::name($name);
         if ($cookie) {
-            $decryptedCookie = self::decrypt($cookie);
-            parse_str($decryptedCookie, $isArray);
-            $explode = explode('=', $decryptedCookie);
+            $encryptedCookieOrNo = $decrypt ? self::decrypt($cookie) : $cookie;
+            parse_str($encryptedCookieOrNo, $isArray);
+            $explode = explode('=', $encryptedCookieOrNo);
             if (!$isArray[$explode[0]]) {
-                return $decrypt ? $decryptedCookie : $cookie;
+                return $encryptedCookieOrNo;
             } else {
-                parse_str($decryptedCookie, $data);
+                parse_str($encryptedCookieOrNo, $data);
                 return $data;
             }
         }
