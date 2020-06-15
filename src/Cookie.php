@@ -59,20 +59,17 @@ class Cookie
         return false;
     }
 
-    /**
-     * @param string $name
-     * @param bool $isArray
-     * @param bool $decrypt
-     * @return mixed|string|null
-     */
-    public static function get(string $name, bool $isArray = false, bool $decrypt = true)
+    public static function get(string $name, bool $decrypt = true)
     {
         $cookie = self::name($name);
         if ($cookie) {
-            if (!$isArray) {
-                return $decrypt ? self::decrypt($cookie) : $cookie;
+            $decryptedCookie = self::decrypt($cookie);
+            parse_str($decryptedCookie, $isArray);
+            $explode = explode('=', $decryptedCookie);
+            if (!$isArray[$explode[0]]) {
+                return $decrypt ? $decryptedCookie : $cookie;
             } else {
-                parse_str(self::decrypt($cookie), $data);
+                parse_str($decryptedCookie, $data);
                 return $data;
             }
         }

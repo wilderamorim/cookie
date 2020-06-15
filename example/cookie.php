@@ -36,7 +36,7 @@ Cookie::set('users', [
 /**
  * get value as array
  */
-echo Cookie::get('users', true)['role'];
+echo Cookie::get('users')['role'];
 
 echo '</br></br>';
 

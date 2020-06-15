@@ -69,7 +69,7 @@ Cookie::set('users', [
 
 ```php
 //name, isArray...
-echo Cookie::get('users', true)['role']; //Developer
+echo Cookie::get('users')['role']; //Developer
 ```
 
 ##### Remove:
