@@ -47,13 +47,13 @@ class Cookie
      */
     public static function has(string $name, ?string $value = null, bool $encrypt = true): bool
     {
-        $cookie = self::name($name);
+        $getCookie = self::getCookie($name);
         if (!$value) {
-            if ($cookie) {
+            if ($getCookie) {
                 return true;
             }
         } else {
-            if ($cookie == ($encrypt ? self::encrypt($value) : $value)) {
+            if ($getCookie == ($encrypt ? self::encrypt($value) : $value)) {
                 return true;
             }
         }
@@ -67,15 +67,15 @@ class Cookie
      */
     public static function get(string $name, bool $decrypt = true)
     {
-        $cookie = self::name($name);
-        if ($cookie) {
-            $encryptedCookieOrNo = $decrypt ? self::decrypt($cookie) : $cookie;
-            parse_str($encryptedCookieOrNo, $isArray);
-            $explode = explode('=', $encryptedCookieOrNo);
+        $getCookie = self::getCookie($name);
+        if ($getCookie) {
+            $cookie = $decrypt ? self::decrypt($getCookie) : $getCookie;
+            parse_str($cookie, $isArray);
+            $explode = explode('=', $cookie);
             if (!$isArray[$explode[0]]) {
-                return $encryptedCookieOrNo;
+                return $cookie;
             } else {
-                parse_str($encryptedCookieOrNo, $data);
+                parse_str($cookie, $data);
                 return $data;
             }
         }
@@ -92,6 +92,15 @@ class Cookie
     private static function setCookie(string $name, ?string $value, int $expire, ?string $path = null): bool
     {
         return setcookie($name, $value, $expire, ($path ?? '/'));
+    }
+
+    /**
+     * @param string $name
+     * @return mixed
+     */
+    private static function getCookie(string $name)
+    {
+        return filter_input(INPUT_COOKIE, $name, FILTER_SANITIZE_STRIPPED);
     }
 
     /**
@@ -119,15 +128,6 @@ class Cookie
     private static function decrypt(string $value): string
     {
         return base64_decode($value);
-    }
-
-    /**
-     * @param string $name
-     * @return mixed
-     */
-    private static function name(string $name)
-    {
-        return filter_input(INPUT_COOKIE, $name, FILTER_SANITIZE_STRIPPED);
     }
 
     public static function all()
