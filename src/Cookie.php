@@ -59,6 +59,11 @@ class Cookie
         return false;
     }
 
+    /**
+     * @param string $name
+     * @param bool $decrypt
+     * @return mixed|string|null
+     */
     public static function get(string $name, bool $decrypt = true)
     {
         $cookie = self::name($name);
