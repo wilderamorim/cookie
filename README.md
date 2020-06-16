@@ -72,23 +72,22 @@ Cookie::set('users', [
 echo Cookie::get('users')['role']; //Developer
 ```
 
+##### Create if Doesn't Exist:
+
+```php
+Cookie::setDoesntHave('toggleSidebar', true, 60);
+```
+
+##### Create if Doesn't Exist and Delete if it Exists:
+
+```php
+Cookie::setDoesntHave('toggleSidebar', true, 60, '/', true);
+```
+
 ##### Remove:
 
 ```php
 Cookie::destroy('food');
-```
-
-##### Create if it Doesn't Exist and Delete if it Exists:
-
-```php
-Cookie::setDoesntHave('toggleSidebar', true, (43830 * 1));
-```
-
-##### Create if it Doesn't Exist:
-
-```php
-//note: not to delete the cookie just remove the last parameter or set it to true, just like the previous example
-Cookie::setDoesntHave('toggleSidebar', true, (43830 * 1), null, false);
 ```
 
 ##### Check if Exists:
@@ -110,12 +109,6 @@ if (Cookie::has('food', 'egg')) {
 } else {
     echo 'the value is different to egg';
 }
-```
-
-##### Show All / Debug:
-
-```php
-Cookie::all();
 ```
 
 ## Contributing

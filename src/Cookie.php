@@ -87,15 +87,15 @@ class Cookie
      * @param mixed $value
      * @param int $minutes
      * @param string|null $path
-     * @param bool $destroy
+     * @param bool $removeHas
      * @return bool|null
      */
-    public static function setDoesntHave(string $name, $value, int $minutes, ?string $path = null, bool $destroy = true)
+    public static function setDoesntHave(string $name, $value, int $minutes, ?string $path = null, bool $removeHas = false)
     {
         if (!self::has($name)) {
             return self::set($name, $value, $minutes, $path);
         }
-        if ($destroy) {
+        if ($removeHas) {
             return self::destroy($name);
         }
         return null;
@@ -147,11 +147,5 @@ class Cookie
     private static function decrypt(string $value): string
     {
         return base64_decode($value);
-    }
-
-    public static function all()
-    {
-        echo '<pre>';
-        var_dump($_COOKIE);
     }
 }

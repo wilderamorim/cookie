@@ -11,7 +11,7 @@ use ElePHPant\Cookie\Cookie;
 /**
  * show all
  */
-Cookie::all();
+var_dump($_COOKIE);
 
 /**
  * create
@@ -47,14 +47,14 @@ echo '</br></br>';
 //Cookie::destroy('users');
 
 /**
- * create if it doesn't exist AND DELETE IF IT EXISTS
+ * create if it doesn't exist
  */
 Cookie::setDoesntHave('toggleSidebar', true, (43830 * 1));
 
 /**
- * create if it doesn't exist
+ * create if it doesn't exist AND DELETE IF IT EXISTS
  */
-Cookie::setDoesntHave('toggleSidebar', true, (43830 * 1), null, false);
+Cookie::setDoesntHave('toggleSidebar', true, (43830 * 1), '/', true);
 
 /**
  * check if exists
