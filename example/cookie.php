@@ -49,12 +49,12 @@ echo '</br></br>';
 /**
  * create if it doesn't exist AND DELETE IF IT EXISTS
  */
-Cookie::doesntHave('toggleSidebar', true, (43830 * 1));
+Cookie::setDoesntHave('toggleSidebar', true, (43830 * 1));
 
 /**
  * create if it doesn't exist
  */
-Cookie::doesntHave('toggleSidebar', true, (43830 * 1), null, false);
+Cookie::setDoesntHave('toggleSidebar', true, (43830 * 1), null, false);
 
 /**
  * check if exists

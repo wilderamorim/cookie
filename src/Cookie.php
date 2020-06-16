@@ -90,7 +90,7 @@ class Cookie
      * @param bool $destroy
      * @return bool|null
      */
-    public static function doesntHave(string $name, $value, int $minutes, ?string $path = null, bool $destroy = true)
+    public static function setDoesntHave(string $name, $value, int $minutes, ?string $path = null, bool $destroy = true)
     {
         if (!self::has($name)) {
             return self::set($name, $value, $minutes, $path);

@@ -81,14 +81,14 @@ Cookie::destroy('food');
 ##### Create if it Doesn't Exist and Delete if it Exists:
 
 ```php
-Cookie::doesntHave('toggleSidebar', true, (43830 * 1));
+Cookie::setDoesntHave('toggleSidebar', true, (43830 * 1));
 ```
 
 ##### Create if it Doesn't Exist:
 
 ```php
 //note: not to delete the cookie just remove the last parameter or set it to true, just like the previous example
-Cookie::doesntHave('toggleSidebar', true, (43830 * 1), null, false);
+Cookie::setDoesntHave('toggleSidebar', true, (43830 * 1), null, false);
 ```
 
 ##### Check if Exists:
