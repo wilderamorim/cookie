@@ -84,6 +84,25 @@ class Cookie
 
     /**
      * @param string $name
+     * @param mixed $value
+     * @param int $minutes
+     * @param string|null $path
+     * @param bool $destroy
+     * @return bool|null
+     */
+    public static function doesntHave(string $name, $value, int $minutes, ?string $path = null, bool $destroy = true)
+    {
+        if (!self::has($name)) {
+            return self::set($name, $value, $minutes, $path);
+        }
+        if ($destroy) {
+            return self::destroy($name);
+        }
+        return null;
+    }
+
+    /**
+     * @param string $name
      * @param string|null $value
      * @param int $expire
      * @param string|null $path

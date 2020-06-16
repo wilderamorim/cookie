@@ -47,6 +47,16 @@ echo '</br></br>';
 //Cookie::destroy('users');
 
 /**
+ * create if it doesn't exist AND DELETE IF IT EXISTS
+ */
+Cookie::doesntHave('toggleSidebar', true, (43830 * 1));
+
+/**
+ * create if it doesn't exist
+ */
+Cookie::doesntHave('toggleSidebar', true, (43830 * 1), null, false);
+
+/**
  * check if exists
  */
 if (Cookie::has('food')) {
