@@ -59,7 +59,7 @@ echo Cookie::get('food'); //egg
 
 ```php
 //name, values, minutes, ...
-Cookie::set('users', [
+Cookie::set('user', [
     'name' => 'Amorim',
     'role' => 'Developer'
 ], 20);
@@ -68,8 +68,7 @@ Cookie::set('users', [
 ##### Get Value as Array:
 
 ```php
-//name, isArray...
-echo Cookie::get('users')['role']; //Developer
+echo Cookie::get('user')['role']; //Developer
 ```
 
 ##### Create if Doesn't Exist:

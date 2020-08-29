@@ -65,7 +65,7 @@ class Cookie
     /**
      * @param string $name
      * @param bool $decrypt
-     * @return array|string|null
+     * @return mixed|string|null
      */
     public static function get(string $name, bool $decrypt = true)
     {
