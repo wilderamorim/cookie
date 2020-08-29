@@ -28,7 +28,7 @@ echo '</br></br>';
 /**
  * create value as array
  */
-Cookie::set('users', [
+Cookie::set('user', [
     'name' => 'Wilder',
     'role' => 'Developer'
 ], 20);
@@ -36,7 +36,7 @@ Cookie::set('users', [
 /**
  * get value as array
  */
-echo Cookie::get('users')['role'];
+echo Cookie::get('user')['role'];
 
 echo '</br></br>';
 
@@ -44,7 +44,7 @@ echo '</br></br>';
  * remove
  */
 //Cookie::destroy('food');
-//Cookie::destroy('users');
+//Cookie::destroy('user');
 
 /**
  * create if it doesn't exist

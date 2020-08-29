@@ -12,7 +12,7 @@ class Cookie
 {
     /**
      * @param string $name
-     * @param mixed $value
+     * @param string|array $value
      * @param int $minutes
      * @param string|null $path
      * @param bool $encrypt
@@ -21,8 +21,8 @@ class Cookie
     public static function set(string $name, $value, int $minutes, ?string $path = null, bool $encrypt = true): bool
     {
         if (is_array($value)) {
-            $queryString = http_build_query($value);
-            $value = $encrypt ? self::encrypt($queryString) : $queryString;
+            $cookie = json_encode($value, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+            $value = $encrypt ? self::encrypt($cookie) : $cookie;
         } else {
             $value = $encrypt ? self::encrypt($value) : $value;
         }
@@ -63,28 +63,23 @@ class Cookie
     /**
      * @param string $name
      * @param bool $decrypt
-     * @return mixed|string|null
+     * @return array|string|null
      */
     public static function get(string $name, bool $decrypt = true)
     {
-        $getCookie = self::getCookie($name);
-        if ($getCookie) {
-            $cookie = $decrypt ? self::decrypt($getCookie) : $getCookie;
-            parse_str($cookie, $isArray);
-            $explode = explode('=', $cookie);
-            if (!$isArray[$explode[0]]) {
-                return $cookie;
-            } else {
-                parse_str($cookie, $data);
-                return $data;
+        $cookie = ($decrypt ? self::decrypt(self::getCookie($name)) : self::getCookie($name));
+        if ($cookie) {
+            if ($decode = json_decode($cookie, true)) {
+                return $decode;
             }
+            return $cookie;
         }
         return null;
     }
 
     /**
      * @param string $name
-     * @param mixed $value
+     * @param string|array $value
      * @param int $minutes
      * @param string|null $path
      * @param bool $removeHas
@@ -119,7 +114,7 @@ class Cookie
      */
     private static function getCookie(string $name)
     {
-        return filter_input(INPUT_COOKIE, $name, FILTER_SANITIZE_STRIPPED);
+        return filter_input(INPUT_COOKIE, $name, FILTER_DEFAULT);
     }
 
     /**
