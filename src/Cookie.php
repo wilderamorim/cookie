@@ -12,7 +12,7 @@ class Cookie
 {
     /**
      * @param string $name
-     * @param string|array $value
+     * @param mixed $value
      * @param int $minutes
      * @param string|null $path
      * @param bool $encrypt
@@ -20,6 +20,7 @@ class Cookie
      */
     public static function set(string $name, $value, int $minutes, ?string $path = null, bool $encrypt = true): bool
     {
+        // check if the cookie value is an array to save in json
         if (is_array($value)) {
             $cookie = json_encode($value, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
             $value = $encrypt ? self::encrypt($cookie) : $cookie;
@@ -52,6 +53,7 @@ class Cookie
             if ($getCookie) {
                 return true;
             }
+            return false;
         } else {
             if ($getCookie == ($encrypt ? self::encrypt($value) : $value)) {
                 return true;
@@ -79,7 +81,7 @@ class Cookie
 
     /**
      * @param string $name
-     * @param string|array $value
+     * @param mixed $value
      * @param int $minutes
      * @param string|null $path
      * @param bool $removeHas
