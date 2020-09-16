@@ -69,12 +69,15 @@ class Cookie
      */
     public static function get(string $name, bool $decrypt = true)
     {
-        $cookie = ($decrypt ? self::decrypt(self::getCookie($name)) : self::getCookie($name));
-        if ($cookie) {
-            if ($decode = json_decode($cookie, true)) {
-                return $decode;
+        if (self::has($name)) {
+            $cookie = ($decrypt ? self::decrypt(self::getCookie($name)) : self::getCookie($name));
+            if ($cookie) {
+                if ($decode = json_decode($cookie, true)) {
+                    return $decode;
+                }
+                return $cookie;
             }
-            return $cookie;
+            return null;
         }
         return null;
     }
