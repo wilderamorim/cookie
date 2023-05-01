@@ -5,23 +5,24 @@
     "ElePHPant",
     "Cookie"
   ],
-  "homepage": "https://www.uebi.com.br",
+  "homepage": "https://www.linkedin.com/in/wilderamorim/",
   "license": "MIT",
   "authors": [
     {
       "name": "Wilder Amorim",
-      "email": "agencia@uebi.com.br",
-      "homepage": "https://www.uebi.com.br",
+      "email": "wilderamorim@msn.com",
+      "homepage": "https://github.com/wilderamorim",
       "role": "Developer"
     }
   ],
   "require": {
-    "php": "^7.1",
-    "ext-json": "*"
+    "php": "^7.4",
+    "ext-json": "*",
+    "ext-openssl": "*"
   },
   "autoload": {
     "psr-4": {
-      "ElePHPant\\Cookie\\": "src"
+      "ElePHPant\\Cookie\\": "src/"
     }
   }
 }

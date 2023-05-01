@@ -9,123 +9,132 @@
 [![Quality Score](https://img.shields.io/scrutinizer/g/wilderamorim/cookie.svg?style=flat-square)](https://scrutinizer-ci.com/g/wilderamorim/cookie)
 [![Total Downloads](https://img.shields.io/packagist/dt/elephpant/cookie.svg?style=flat-square)](https://packagist.org/packages/elephpant/cookie)
 
-###### A simple and effective way to work with Cookies.
-
-Um jeito simples e eficaz de trabalhar com Cookies.
-
-### Highlights
-
-- Simple installation (Instalação simples)
-- Composer ready and PSR-2 compliant (Pronto para o composer e compatível com PSR-2)
-
 ## Installation
 
-Cookie is available via Composer:
+### Composer (recommended)
 
-```bash
-"elephpant/cookie": "1.0.*"
+Use [Composer](https://getcomposer.org) to install this library from Packagist:
+[`elephpant/cookie`](https://packagist.org/packages/elephpant/cookie)
+
+Run the following command from your project directory to add the dependency:
+
+```sh
+composer require elephpant/cookie "^2.0"
 ```
 
-or run
+Alternatively, add the dependency directly to your `composer.json` file:
 
-```bash
-composer require elephpant/cookie
+```json
+"require": {
+    "elephpant/cookie": "^2.0"
+}
 ```
 
-## Documentation
+### Usage
 
-###### For details on how to use, see a sample folder in the component directory. In it you will have an example of use for each class. It works like this:
+```php
+<?php
+use ElePHPant\Cookie\Cookie\Cookie;
 
-Para mais detalhes sobre como usar, veja uma pasta de exemplo no diretório do componente. Nela terá um exemplo de uso para cada classe. Ele funciona assim:
+// default expiration: minutes
+// default encryption: there is no encryption
+$cookie = new Cookie();
+
+// change expiration unit
+$configs = [
+    'expiration' => 'days', // seconds, minutes, hours, days, weeks, months, years
+];
+
+// set Base64 encryption
+$configs = [
+    'encryption' => \ElePHPant\Cookie\Strategies\Encryption\Base64EncryptionStrategy::class,
+];
+
+// set AES-256 encryption
+$configs = [
+    'encryption' => \ElePHPant\Cookie\Strategies\Encryption\AES256EncryptionStrategy::class,
+    'encrypt_key' => 'SET_YOUR_ENCRYPT_KEY_HERE', // required if using AES-256
+];
+
+$cookie = new Cookie($configs);
+```
 
 ##### Create Cookie:
 
 ```php
-<?php
-require __DIR__ . '/../vendor/autoload.php';
-use ElePHPant\Cookie\Cookie;
+$str = 'john_doe';
+$arr = ['name' => 'John Doe', 'email' => 'john@example.com', 'age' => 30,];
 
-//name, value, minutes, ...
-Cookie::set('food', 'egg', 20);
+// name, value(s), expiration, ...
+$cookie::set('username', $str, 20);
+$cookie::set('user', $arr, 20);
 ```
 
-##### Get Cookie Value:
+##### Get Cookie(s):
 
 ```php
-echo Cookie::get('food'); //egg
-```
+echo $cookie::get('username'); // john_doe
 
-##### Create Value as Array:
 
-```php
-//name, values, minutes, ...
-Cookie::set('user', [
-    'name' => 'Amorim',
-    'role' => 'Developer'
-], 20);
-```
+$arr = $cookie::get('user');
+var_export($arr); // array ( 'name' => 'John Doe', 'email' => 'john@example.com', 'age' => 30, )
+echo $arr['email']; // john@example.com
 
-##### Get Value as Array:
 
-```php
-echo Cookie::get('user')['role']; //Developer
+$all = $cookie::get();
+var_export($all); // array ( 'username' => 'john_doe', 'user' => array ( 'name' => 'John Doe', 'email' => 'john@example.com', 'age' => 30, ), )
+
+
+var_export($_COOKIE); // array ( 'username' => '9sV1OIHc7taGoafeXWjl+gcrJFpIpg8Hkqe4fdGRygI=', 'user' => 'rLrCW9eBvoPijA+bSuIIrqbWccbYJqk2aPK5RGMwiLNpMZw2nYrrU7A2Zmuk3CGt0XiXlXpcQQv7h40M/6jbYslrlsvTJXm3mtG0nyiRDCg=', )
 ```
 
 ##### Create if Doesn't Exist:
 
 ```php
-Cookie::setDoesntHave('toggleSidebar', true, 60);
+$cookie::setDoesntHave('cookie_consent', true, 60);
 ```
 
 ##### Create if Doesn't Exist and Delete if it Exists:
 
 ```php
-Cookie::setDoesntHave('toggleSidebar', true, 60, '/', true);
+$cookie::setDoesntHave('toggle_sidebar', true, 60, '/', true);
 ```
 
 ##### Remove:
 
 ```php
-Cookie::destroy('food');
+$cookie::destroy('user');
+$cookie::destroy(); // all
 ```
 
 ##### Check if Exists:
 
 ```php
-if (Cookie::has('food')) {
-    echo 'exists';
+if ($cookie::has('food')) {
+    echo 'The cookie exists.';
 } else {
-    echo 'does not exist';
+    echo 'The cookie does not exist.';
 }
 ```
 
 ##### Check if Exists by Value:
 
 ```php
-//name, value
-if (Cookie::has('food', 'egg')) {
-    echo 'the value is equal to egg';
+if ($cookie::has('username', 'john_doe')) {
+    echo 'The cookie exists with the correct value.';
 } else {
-    echo 'the value is different to egg';
+    echo 'The cookie does not exist or has a different value.';
 }
 ```
 
 ## Contributing
 
-Please see [CONTRIBUTING](https://github.com/wilderamorim/cookie/blob/master/CONTRIBUTING.md) for details.
-
-## Support
-
-###### Security: If you discover any security related issues, please email agencia@uebi.com.br instead of using the issue tracker.
-
-Se você descobrir algum problema relacionado à segurança, envie um e-mail para agencia@uebi.com.br em vez de usar o rastreador de problemas.
-
-Thank you
+No one ever has enough engineers, so we're very happy to accept contributions
+via Pull Requests. For details, see [CONTRIBUTING](CONTRIBUTING.md)
 
 ## Credits
 
 - [Wilder Amorim](https://github.com/wilderamorim) (Developer)
-- [Agência Uebi](https://www.uebi.com.br) (Team)
 - [All Contributors](https://github.com/wilderamorim/cookie/contributors) (This Rock)
 
 ## License
