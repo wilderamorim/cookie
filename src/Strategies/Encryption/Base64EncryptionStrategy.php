@@ -37,9 +37,9 @@ class Base64EncryptionStrategy implements EncryptionStrategyInterface
     /**
      * Boot the encryption strategy.
      *
-     * @param array $configs The configuration array.
+     * @param array $options The option array.
      */
-    public function boot(array $configs): void
+    public function boot(array $options): void
     {
         // TODO: Implement any necessary initialization logic.
     }

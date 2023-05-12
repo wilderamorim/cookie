@@ -41,22 +41,28 @@ use ElePHPant\Cookie\Cookie\Cookie;
 $cookie = new Cookie();
 
 // change expiration unit
-$configs = [
+$options = [
     'expiration' => 'days', // seconds, minutes, hours, days, weeks, months, years
 ];
 
 // set Base64 encryption
-$configs = [
+$options = [
     'encryption' => \ElePHPant\Cookie\Strategies\Encryption\Base64EncryptionStrategy::class,
 ];
 
 // set AES-256 encryption
-$configs = [
+$options = [
     'encryption' => \ElePHPant\Cookie\Strategies\Encryption\AES256EncryptionStrategy::class,
     'encrypt_key' => 'SET_YOUR_ENCRYPT_KEY_HERE', // required if using AES-256
 ];
 
-$cookie = new Cookie($configs);
+// other optional parameters
+$options['path'] = '/';
+$options['domain'] = '';
+$options['secure'] = false;
+$options['httponly'] = false;
+
+$cookie = new Cookie($options);
 ```
 
 ##### Create Cookie:
@@ -120,7 +126,13 @@ if ($cookie::has('food')) {
 ##### Check if Exists by Value:
 
 ```php
-if ($cookie::has('username', 'john_doe')) {
+if ($cookie::has('username', $str)) {
+    echo 'The cookie exists with the correct value.';
+} else {
+    echo 'The cookie does not exist or has a different value.';
+}
+
+if ($cookie::has('user', $arr)) {
     echo 'The cookie exists with the correct value.';
 } else {
     echo 'The cookie does not exist or has a different value.';

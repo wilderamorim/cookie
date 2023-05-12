@@ -20,11 +20,11 @@ class AES256EncryptionStrategy implements EncryptionStrategyInterface
     /**
      * Create a new instance of AES256EncryptionStrategy.
      *
-     * @param array $configs The configuration array.
+     * @param array $options The option array.
      */
-    public function __construct(array $configs)
+    public function __construct(array $options)
     {
-        $this->boot($configs);
+        $this->boot($options);
     }
 
     /**
@@ -68,15 +68,15 @@ class AES256EncryptionStrategy implements EncryptionStrategyInterface
     /**
      * Boot the encryption strategy by setting the encryption key.
      *
-     * @param array $configs The configuration array.
-     * @throws InvalidParamException If the encryption key is missing in the configuration.
+     * @param array $options The option array.
+     * @throws InvalidParamException If the encryption key is missing in the option.
      */
-    public function boot(array $configs): void
+    public function boot(array $options): void
     {
-        if (!in_array('encrypt_key', array_keys($configs))) {
+        if (!in_array('encrypt_key', array_keys($options))) {
             throw new InvalidParamException('Encryption key is missing in params.');
         }
 
-        $this->encryptKey = $configs['encrypt_key'];
+        $this->encryptKey = $options['encrypt_key'];
     }
 }

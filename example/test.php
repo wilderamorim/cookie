@@ -8,8 +8,8 @@ ini_set('display_errors', '0');
 require dirname(__DIR__, 1) . '/vendor/autoload.php';
 
 
-$configs = include __DIR__ . '/configs/cookie.php';
-$cookie = new \ElePHPant\Cookie\Cookie\Cookie($configs);
+$options = include __DIR__ . '/config/cookie.php';
+$cookie = new \ElePHPant\Cookie\Cookie\Cookie($options);
 
 
 /**
@@ -69,7 +69,7 @@ $cookie::setDoesntHave('cookie_consent', true, 5);
 /**
  * create if it doesn't exist AND DELETE IF IT EXISTS
  */
-$cookie::setDoesntHave('toggle_sidebar', true, 5, '/', true);
+$cookie::setDoesntHave('toggle_sidebar', true, 5, true);
 
 
 /**
@@ -86,6 +86,16 @@ if ($cookie::has('food')) {
  * check if exists by value
  */
 if ($cookie::has('username', 'john_doe')) {
+    echo 'The cookie exists with the correct value.';
+} else {
+    echo 'The cookie does not exist or has a different value.';
+}
+
+
+/**
+ * check if exists by array value
+ */
+if ($cookie::has('user', $arrayValue)) {
     echo 'The cookie exists with the correct value.';
 } else {
     echo 'The cookie does not exist or has a different value.';

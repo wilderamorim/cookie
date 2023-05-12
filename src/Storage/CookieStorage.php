@@ -13,18 +13,42 @@ namespace ElePHPant\Cookie\Storage;
  */
 class CookieStorage implements CookieStorageInterface
 {
+    /** @var array  The cookie options array. */
+    private array $cookieOptions;
+
+    /** @var string The expiration time unit. */
+    private string $expiration;
+
+    /** Default options for the cookie. */
+    private const DEFAULT_VALUES = [
+        'path' => '/',
+        'domain' => '',
+        'secure' => false,
+        'httponly' => false,
+    ];
+
+    /**
+     * @param array $options The options array for the cookie storage.
+     */
+    public function __construct(array $options)
+    {
+        $this->expiration = $options['expiration'];
+        $this->cookieOptions = array_intersect_key($options, array_flip(array_keys(self::DEFAULT_VALUES)));
+        $this->cookieOptions = array_replace(self::DEFAULT_VALUES, $this->cookieOptions);
+    }
+
     /**
      * Set a cookie.
      *
      * @param string      $name   The name of the cookie.
      * @param string|null $value  The value of the cookie.
      * @param int         $expire The expiration time of the cookie as a Unix timestamp.
-     * @param string|null $path   The path on the server in which the cookie will be available.
      * @return bool               True if the cookie is set successfully, false otherwise.
      */
-    public function set(string $name, ?string $value, int $expire, ?string $path = null): bool
+    public function set(string $name, ?string $value, int $expire): bool
     {
-        return setcookie($name, $value, $expire, ($path ?? '/'));
+        $this->cookieOptions['expires'] = strtotime("+$expire $this->expiration");
+        return setcookie($name, $value, $this->cookieOptions);
     }
 
     /**
@@ -46,16 +70,16 @@ class CookieStorage implements CookieStorageInterface
      * Delete a cookie or all cookies.
      *
      * @param string|null $name The name of the cookie. If null, deletes all cookies.
-     * @param string|null $path The path on the server in which the cookie was available.
      * @return bool             True if the cookie(s) is deleted successfully, false otherwise.
      */
-    public function delete(?string $name = null, ?string $path = null): bool
+    public function delete(?string $name = null): bool
     {
+        $options = array_merge($this->cookieOptions, ['expires' => -1]);
         if (!$name) {
-            array_map(fn($name) => $this->set($name, null, -1, $path), array_keys($_COOKIE));
+            array_map(fn($name) => setcookie($name, null, $options), array_keys($_COOKIE));
             return true;
         }
 
-        return $this->set($name, null, -1, $path);
+        return setcookie($name, null, $options);
     }
 }

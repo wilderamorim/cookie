@@ -13,14 +13,16 @@ namespace ElePHPant\Cookie\Cookie;
  */
 class Cookie
 {
-    use CookieTrait;
+    use CookieTrait {
+        CookieTrait::__construct as private __traitConstructor;
+    }
 
     /**
-     * @param array $configs
+     * @param array $options
      */
-    public function __construct(array $configs = [])
+    public function __construct(array $options = [])
     {
-        $this->processConfig($configs);
+        $this->__traitConstructor($options);
     }
 
     /**
@@ -28,11 +30,10 @@ class Cookie
      *
      * @param string        $name       The name of the cookie.
      * @param mixed         $value      The value of the cookie.
-     * @param int           $expiration The expiration time of the cookie in seconds.
-     * @param string|null   $path       The path on the server in which the cookie will be available.
+     * @param int           $expiration The expiration time of the cookie.
      * @return bool                     True if the cookie is set successfully, false otherwise.
      */
-    public static function set(string $name, $value, int $expiration, ?string $path = null): bool
+    public static function set(string $name, $value, int $expiration): bool
     {
         if (is_array($value)) {
             $value = json_encode($value, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
@@ -42,7 +43,7 @@ class Cookie
             $value = self::$encryptionStrategy->encrypt($value);
         }
 
-        return self::$storage->set($name, $value, strtotime("+{$expiration} " . self::$configs['expiration']), $path);
+        return self::$storage->set($name, $value, $expiration);
     }
 
     /**
@@ -70,31 +71,29 @@ class Cookie
      * Delete a cookie.
      *
      * @param string|null $name The name of the cookie. If null, deletes all cookies.
-     * @param string|null $path The path on the server in which the cookie was available.
      * @return bool             True if the cookie is deleted successfully, false otherwise.
      */
-    public static function destroy(?string $name = null, ?string $path = null): bool
+    public static function destroy(?string $name = null): bool
     {
-        return self::$storage->delete($name, $path);
+        return self::$storage->delete($name);
     }
 
     /**
      * Check if a cookie exists and optionally check its value.
      *
-     * @param string      $name  The name of the cookie.
-     * @param string|null $value The expected value of the cookie. If null, only checks for existence.
-     * @return bool              True if the cookie exists and its value matches the expected value (or only existence is checked), false otherwise.
+     * @param string    $name   The name of the cookie.
+     * @param mixed     $value  The expected value of the cookie. If null, only checks for existence.
+     * @return bool             True if the cookie exists and its value matches the expected value (or only existence is checked), false otherwise.
      */
-    public static function has(string $name, ?string $value = null): bool
+    public static function has(string $name, $value = null): bool
     {
-        $getCookie = self::$storage->get($name);
+        $getCookie = self::get($name);
 
         if (!$value) {
             return $getCookie !== null;
         }
 
-        $expectedValue = self::$isEncrypted ? self::$encryptionStrategy->encrypt($value) : $value;
-        return $getCookie === $expectedValue;
+        return $getCookie === $value;
     }
 
     /**
@@ -102,15 +101,14 @@ class Cookie
      *
      * @param string      $name         The name of the cookie.
      * @param mixed       $value        The value of the cookie.
-     * @param int         $expiration   The expiration time of the cookie in seconds.
-     * @param string|null $path         The path on the server in which the cookie will be available.
+     * @param int         $expiration   The expiration time of the cookie.
      * @param bool        $removeHas    Whether to remove the existing cookie if it exists.
      * @return bool|null                True if the cookie is set successfully, null if the cookie already exists and $removeHas is false.
      */
-    public static function setDoesntHave(string $name, $value, int $expiration, ?string $path = null, bool $removeHas = false): ?bool
+    public static function setDoesntHave(string $name, $value, int $expiration, bool $removeHas = false): ?bool
     {
         if (!self::has($name)) {
-            return self::set($name, $value, $expiration, $path);
+            return self::set($name, $value, $expiration);
         }
 
         if ($removeHas) {

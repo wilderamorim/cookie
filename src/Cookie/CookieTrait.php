@@ -5,7 +5,7 @@ namespace ElePHPant\Cookie\Cookie;
 
 use ElePHPant\Cookie\Storage\{CookieStorage, CookieStorageInterface};
 use ElePHPant\Cookie\Strategies\Encryption\EncryptionStrategyInterface;
-use ElePHPant\Cookie\ValueObjects\{Config, Expiration};
+use ElePHPant\Cookie\ValueObjects\{Option, Expiration};
 
 /**
  * Class CookieTrait
@@ -17,8 +17,8 @@ use ElePHPant\Cookie\ValueObjects\{Config, Expiration};
  */
 trait CookieTrait
 {
-    /** @var array Stores the configuration array. */
-    protected static array $configs = [];
+    /** @var array Stores the option array. */
+    protected static array $options = [];
 
     /** @var bool Indicates if encryption is enabled */
     protected static bool $isEncrypted = false;
@@ -29,31 +29,34 @@ trait CookieTrait
     /** @var EncryptionStrategyInterface|null Encryption strategy object. */
     protected static ?EncryptionStrategyInterface $encryptionStrategy;
 
+    /** @var array|string[] Stores the default values for option array. */
+    private static array $defaultValues = ['expiration' => 'minutes'];
+
     /**
-     * Process the configuration array.
+     * Process the option array.
      *
-     * @param array $configs The configuration array.
+     * @param array $options The option array.
      */
-    protected static function processConfig(array $configs): void
+    public function __construct(array $options)
     {
-        self::boot($configs);
+        self::boot($options);
     }
 
     /**
      * Initialize the trait by bootstrapping the necessary components.
      *
-     * @param array $configs The configuration array.
+     * @param array $options The option array.
      */
-    private static function boot(array $configs): void
+    private static function boot(array $options): void
     {
-        self::$storage = new CookieStorage();
+        $options = array_replace(self::$defaultValues, $options);
 
-        self::$configs = (new Config($configs))->toArray();
-        self::$configs['expiration'] = new Expiration(self::$configs['expiration'] ?? 'minutes');
+        self::$options = (new Option($options))->toArray();
+        self::$storage = new CookieStorage(self::$options);
 
-        if (!empty(self::$configs['encryption'])) {
+        if (!empty(self::$options['encryption'])) {
             self::$isEncrypted = true;
-            self::$encryptionStrategy = new self::$configs['encryption'](self::$configs);
+            self::$encryptionStrategy = new self::$options['encryption'](self::$options);
         }
     }
 }
