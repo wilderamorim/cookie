@@ -35,6 +35,10 @@ class Cookie
      */
     public static function set(string $name, $value, int $expiration): bool
     {
+        if (empty($value) || $expiration < 0) {
+            return false;
+        }
+
         if (is_array($value)) {
             $value = json_encode($value, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
         }
