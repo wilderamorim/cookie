@@ -35,7 +35,7 @@ class Cookie
      */
     public static function set(string $name, $value, int $expiration): bool
     {
-        if (empty($value) || $expiration < 0) {
+        if (empty($value) || $expiration < 1) {
             return false;
         }
 

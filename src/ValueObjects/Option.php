@@ -144,6 +144,7 @@ final class Option
             'domain' => fn($value) => filter_var($value, FILTER_VALIDATE_DOMAIN),
             'secure' => fn($value) => is_bool($value),
             'httponly' => fn($value) => is_bool($value),
+            'samesite' => fn($value) => (in_array($value, ['None', 'Lax', 'Strict']) && $value !== 'None') || (isset($options['secure']) && $value === 'None' && $options['secure'] === true),
         ];
     }
 }

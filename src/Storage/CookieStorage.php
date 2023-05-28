@@ -33,7 +33,9 @@ class CookieStorage implements CookieStorageInterface
     public function __construct(array $options)
     {
         $this->expiration = $options['expiration'];
-        $this->cookieOptions = array_intersect_key($options, array_flip(array_keys(self::DEFAULT_VALUES)));
+        $allowedOptions = [...array_keys(self::DEFAULT_VALUES), 'samesite'];
+
+        $this->cookieOptions = array_intersect_key($options, array_flip($allowedOptions));
         $this->cookieOptions = array_replace(self::DEFAULT_VALUES, $this->cookieOptions);
     }
 

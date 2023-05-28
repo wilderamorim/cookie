@@ -62,6 +62,10 @@ $options['domain'] = '';
 $options['secure'] = false;
 $options['httponly'] = false;
 
+// other optional parameters
+$options['samesite'] = 'None'; // must be 'None', 'Lax' or 'Strict'. If none requires secure true
+$options['secure'] = true; // // required if samesite is 'None'
+
 $cookie = new Cookie($options);
 ```
 
@@ -103,7 +107,7 @@ $cookie::setDoesntHave('cookie_consent', true, 60);
 ##### Create if Doesn't Exist and Delete if it Exists:
 
 ```php
-$cookie::setDoesntHave('toggle_sidebar', true, 60, '/', true);
+$cookie::setDoesntHave('toggle_sidebar', true, 60, true);
 ```
 
 ##### Remove:
