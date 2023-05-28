@@ -62,9 +62,9 @@ $options['domain'] = '';
 $options['secure'] = false;
 $options['httponly'] = false;
 
-// other optional parameters
+// SameSite
 $options['samesite'] = 'None'; // must be 'None', 'Lax' or 'Strict'. If none requires secure true
-$options['secure'] = true; // // required if samesite is 'None'
+$options['secure'] = true; // required if samesite is 'None'
 
 $cookie = new Cookie($options);
 ```
